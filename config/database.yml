@@ -1,0 +1,24 @@
+default: &default
+  adapter: jdbcpostgresql
+  encoding: unicode
+  # For details on connection pooling, see rails configuration guide
+  # http://guides.rubyonrails.org/configuring.html#database-pooling
+  pool: 5
+
+
+development:
+  <<: *default
+  database: play4u_dev
+  username: ykeyser
+  password: yury2001
+  
+test:
+  <<: *default
+  database: play4u_test
+  username: ykeyser
+  password: yury2001
+  
+production:
+  <<: *default
+  url: <%= ENV['DATABASE_URL'] %>
+  pool: <%= ENV['CONNECTION_POOL_SIZE'] %>
