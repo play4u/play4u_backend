@@ -3,6 +3,13 @@ source 'https://rubygems.org'
 # PUMA web server
 gem 'puma'
 
+# Ensure clean DB state between tests
+gem 'database_cleaner', '~> 1.4.1'
+
+group :development, :test do
+  gem 'rspec-rails', '~> 3.0'
+end
+
 # Stateful objects
 gem 'workflow', '~> 1.2.0'
 

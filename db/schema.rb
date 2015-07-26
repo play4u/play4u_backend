@@ -29,14 +29,6 @@ ActiveRecord::Schema.define(version: 20150726094009) do
 
   add_index "djs", ["email"], name: "index_djs_on_email", using: :btree
 
-  create_table "employees", force: :cascade do |t|
-    t.string   "name",       limit: 255
-    t.integer  "age"
-    t.text     "address"
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
-  end
-
   create_table "events", force: :cascade do |t|
     t.datetime "start",                   null: false
     t.datetime "end"
