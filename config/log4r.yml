@@ -1,0 +1,25 @@
+log4r_config:
+   loggers:
+   - name: model
+     level: INFO
+     outputters: 
+       - model_outputter
+   - name: controller
+     level: INFO 
+     outputters:
+       - controller_outputter
+   outputters:
+   - name: model_outputter
+     type: FileOutputter
+     default: true
+     filename: log/model.log
+     formatter:
+       type: PatternFormatter
+       pattern: '[%d][%C][%l][%h] %m'
+   - name: controller_outputter
+     type: FileOutputter
+     default: true
+     filename: log/controller.log
+     formatter:
+       type: PatternFormatter
+       pattern: '[%d][%C][%l][%h] %m'
