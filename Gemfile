@@ -2,15 +2,24 @@ source 'https://rubygems.org'
 
 # PUMA web server
 gem 'puma'
+
+# Stateful objects
+gem 'workflow', '~> 1.2.0'
+
+# Log4r
+gem 'log4r', '~> 1.1.10'
+
+# REST client
 gem 'rest-client', '~> 1.8.0'
 
+# Code quality
+gem "factory_girl_rails", "~> 4.0"
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.3'
-# Use sqlite3 as the database for Active Record
-#gem 'sqlite3'
+
+# JRuby adapters
 gem 'activerecord-jdbcpostgresql-adapter'
-gem 'activerecord-jdbcsqlite3-adapter'
 
 # Use CoffeeScript for .coffee assets and views
 gem 'coffee-rails', '~> 4.1.0'
