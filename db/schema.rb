@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150726094009) do
+ActiveRecord::Schema.define(version: 20150727190243) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,6 +28,14 @@ ActiveRecord::Schema.define(version: 20150726094009) do
   end
 
   add_index "djs", ["email"], name: "index_djs_on_email", using: :btree
+
+  create_table "employees", force: :cascade do |t|
+    t.string   "name",       limit: 255
+    t.integer  "age"
+    t.text     "address"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
 
   create_table "events", force: :cascade do |t|
     t.datetime "start",                   null: false
@@ -52,6 +60,16 @@ ActiveRecord::Schema.define(version: 20150726094009) do
   end
 
   add_index "listeners", ["email"], name: "index_listeners_on_email", using: :btree
+
+  create_table "locations", force: :cascade do |t|
+    t.integer "person_id"
+    t.string  "person_type", limit: 255
+    t.integer "latitude"
+    t.integer "longitude"
+    t.string  "user_ip",     limit: 255
+  end
+
+  add_index "locations", ["person_type", "person_id"], name: "index_locations_on_person_type_and_person_id", using: :btree
 
   create_table "reservations", force: :cascade do |t|
     t.integer  "event_id",   null: false

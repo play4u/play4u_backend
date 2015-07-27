@@ -11,6 +11,8 @@ group :development, :test do
   gem 'rspec-rails', '~> 3.0'
 end
 
+gem 'threadpool', '~> 0.1.2'
+
 # Stateful objects
 gem 'workflow', '~> 1.2.0'
 
