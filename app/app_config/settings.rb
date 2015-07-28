@@ -16,5 +16,21 @@ module AppConfig
     def self.mailgun_base_url
       ENV['MAILGUN_BASE_URL']
     end
+    
+    def self.mailgun_email_address
+      ENV['MAILGUN_EMAIL_ADDRESS']
+    end
+    
+    def self.mailgun_email_display_name
+      ENV['MAILGUN_EMAIL_DISPLAY_NAME']
+    end
+    
+    def self.song_request_email_subject
+      ENV['SONG_REQUEST_EMAIL_SUBJECT']
+    end
+    
+    def self.song_request_email_tag
+      ENV['SONG_REQUEST_EMAIL_TAG']
+    end
   end
 end
