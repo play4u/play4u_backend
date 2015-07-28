@@ -8,7 +8,7 @@ describe 'distance matrix integration' do
     
     it 'shall retrieve distance' do
       response = RestClient.get(url)
-      hash_response=JSON.parse(response.to_s)
+      hash_response=JSON.parse(response)
       expect(hash_response['rows'].length).to be > 0
     end  
   end

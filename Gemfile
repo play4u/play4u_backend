@@ -4,6 +4,9 @@ ruby '2.2.2', :engine => 'jruby', :engine_version => '9.0.0.0.rc2'
 # PUMA web server
 gem 'puma'
 
+gem 'composite_primary_keys'
+gem 'multimap', '~> 1.1.3'
+
 # Ensure clean DB state between tests
 gem 'database_cleaner', '~> 1.4.1'
 

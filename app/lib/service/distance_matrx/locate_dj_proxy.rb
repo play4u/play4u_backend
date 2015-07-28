@@ -1,3 +1,4 @@
+require 'log4r'
 require 'rest_client'
 require 'json'
 
@@ -6,9 +7,13 @@ module Service
     class LocateDJProxy
       SEARCH_RADIUS=5
       
+      attr_reader :search_radius, :api_adapter, :listener
+      
       def initialize(listener,search_radius=SEARCH_RADIUS)
         @listener=listener
         @search_radius=search_radius
+        @logger=Log4r::Logger['model']
+        @api_adapter=::Service::DistanceMatrix::Adapters::ApiAdapter.new
       end
       
       # Finds all DJs
@@ -17,19 +22,23 @@ module Service
       # Returns a list of DJs within a specified radius
       def locate!
         djs_found=[]
-        listener_position=Util::Position.new(@listener.latitude,@listener.longitude)
         
-        DJ.all.for_each do |dj|
-          dj_position=Util::Position.new(dj.location.latitude, dj.location.longitude)
+        Dj.find_each do |dj|
+          distance=@api_adapter
+          .set_origin(@listener.location.get_position)
+          .set_destination(dj.location.get_position)
+          .send!
+          .get_distance
           
-          response=RestClient.get(Service::DistanceMatrix::Builders::URLBuilder.new(
-          listener_position,[dj_position]).build)
-    
-          hash_json=JSON.parse(response.to_s)
-          
-          if hash_json['rows'].present? && hash_json['rows'].
-            first['elements'].first['distance']['text'].to_f <= @search_radius
+          if distance <= @search_radius
             djs_found << dj
+          else
+             @logger.warn %Q(Distance NOT found 
+             Listener id: #{@listener.id} 
+             DJ id: #{dj.id} 
+             Origin: #{@listener.location.get_position}
+             Destination: #{dj.location.get_position}
+             )
           end
         end
         

@@ -1,5 +1,3 @@
-require 'position'
-require 'email_song_request_proxy'
 require 'log4r'
 require 'rest_client'
 

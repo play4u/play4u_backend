@@ -2,20 +2,28 @@ module Service
   module DistanceMatrix
     module Builders
       class URLBuilder
-        def set_position(origin,destinations)
+        attr_reader :origin, :destination
+        
+        def set_destination(destination)
+          @destination = destination
+          self        
+        end
+        
+        def set_origin(origin)
           @origin=origin
-          @destinations=destinations        
+          self
         end
         
         def build
           raise ArgumentError.new('Origin is required') if @origin.blank?
-          raise ArgumentError.new('At least one destination is required') if @destinations.blank?
+          raise ArgumentError.new('Destination is required') if @destination.blank?
           
-          Config::ServiceSettings.google_distance_matrix_base_url+'/json?'+
-          'origin='+@origin+'&'+
-          'destinations='+@destinations.join("|")+'&'+
-          'language=en'+'&'+
-          'units=imperial'
+          AppConfig::ServiceSettings.google_distance_matrix_base_url+'/json?'+
+          'origin=' + @origin.to_s + '&' +
+          'destinations=' + @destination.to_s + '&' +
+          'language=en'+ '&' +
+          'units=imperial' + '&' +
+          'key=' + AppConfig::ServiceSettings.google_api_key
         end
       end
     end
