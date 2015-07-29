@@ -1,0 +1,2 @@
+class ListenerController < ApplicationController
+end

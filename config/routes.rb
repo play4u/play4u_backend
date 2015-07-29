@@ -1,6 +1,10 @@
 require_relative "#{Rails.root}/app/app_config/web_settings"
 
 Rails.application.routes.draw do
+  resources :djs do
+    resources :events
+  end
+  
   post 'listener_requests/request_song'
 
   get AppConfig::WebSettings.email_song_request_route, 
