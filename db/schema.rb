@@ -42,11 +42,11 @@ ActiveRecord::Schema.define(version: 20150728192511) do
     t.datetime "updated_at",              null: false
   end
 
-  create_table "listener_song_requests", id: false, force: :cascade do |t|
-    t.integer  "listener_id", null: false
-    t.integer  "song_id",     null: false
+  create_table "listener_song_requests", force: :cascade do |t|
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+    t.integer  "listener_id", null: false
+    t.integer  "song_id",     null: false
   end
 
   add_index "listener_song_requests", ["listener_id"], name: "index_listener_song_requests_on_listener_id", using: :btree
@@ -72,17 +72,20 @@ ActiveRecord::Schema.define(version: 20150728192511) do
   add_index "locations", ["person_type", "person_id"], name: "index_locations_on_person_type_and_person_id", using: :btree
 
   create_table "reservations", force: :cascade do |t|
-    t.integer  "event_id",          null: false
-    t.integer  "dj_id",             null: false
-    t.integer  "listener_id",       null: false
-    t.integer  "song_id",           null: false
-    t.datetime "request_timestamp", null: false
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
+    t.datetime "request_timestamp", default: '2015-07-29 03:46:11'
+    t.datetime "created_at",                                        null: false
+    t.datetime "updated_at",                                        null: false
+    t.integer  "event_id",                                          null: false
+    t.integer  "dj_id",                                             null: false
+    t.integer  "listener_id",                                       null: false
+    t.integer  "song_id",                                           null: false
   end
 
   add_index "reservations", ["dj_id"], name: "index_reservations_on_dj_id", using: :btree
   add_index "reservations", ["event_id"], name: "index_reservations_on_event_id", using: :btree
+  add_index "reservations", ["listener_id"], name: "index_reservations_on_listener_id", using: :btree
+  add_index "reservations", ["request_timestamp"], name: "index_reservations_on_request_timestamp", using: :btree
+  add_index "reservations", ["song_id"], name: "index_reservations_on_song_id", using: :btree
 
   create_table "songs", force: :cascade do |t|
     t.string   "name",       limit: 255
@@ -109,5 +112,7 @@ ActiveRecord::Schema.define(version: 20150728192511) do
   add_foreign_key "listener_song_requests", "songs"
   add_foreign_key "reservations", "djs"
   add_foreign_key "reservations", "events"
+  add_foreign_key "reservations", "listeners"
+  add_foreign_key "reservations", "songs"
   add_foreign_key "songs", "artists"
 end

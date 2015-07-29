@@ -1,3 +1,3 @@
 Rails.application.routes.draw do
-  #root 'employees#index'
+   get '/emails/song/request', to: 'emails#generate_song_request'
 end
