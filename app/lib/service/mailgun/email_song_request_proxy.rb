@@ -7,6 +7,7 @@ module Service
         @djs=djs
         @listener_song_request=listener_song_request
         @api_adapter=::Service::Mailgun::Adapters::ApiAdapter.new
+        @email_generator=Service::Mailgun::Builders::EmailGenerator.new
       end
       
       # This will be optimized in the future to be concurrent
@@ -21,8 +22,9 @@ module Service
           .set_subject(AppConfig::ServiceSettings.song_request_email_subject)
           .set_tag(AppConfig::ServiceSettings.song_request_email_tag)
           .set_body(
-            Service::Mailgun::Facades::EmailGeneratorFacade
-            .new(dj,@listener_song_request)
+            @email_generator
+            .set_dj(dj)
+            .set_listener_song_request(@listener_song_request)
             .generate_song_request!
           )
           .send!

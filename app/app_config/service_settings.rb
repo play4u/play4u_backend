@@ -9,10 +9,6 @@ module AppConfig
       ENV['GOOGLE_DISTANCE_MATRIX_BASE_URL']
     end
     
-    def self.mailgun_api_key
-      ENV['MAILGUN_API_KEY']
-    end
-    
     def self.mailgun_base_url
       ENV['MAILGUN_BASE_URL']
     end
