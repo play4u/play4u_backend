@@ -25,7 +25,7 @@ module Proxy
       @logger.info('Created request: '+@request.to_json)
       
       @djs_found = Service::DistanceMatrix::LocateDJProxy.new(@listener).locate!
-      Service::Mail::EmailSongRequestProxy.new(@djs_found,@request).send!
+      Service::Mailgun::EmailSongRequestProxy.new(@djs_found,@request).send!
       @request
     end
   end
