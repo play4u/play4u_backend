@@ -5,6 +5,7 @@ class CreateLocation < ActiveRecord::Migration
       t.integer :latitude
       t.integer :longitude
       t.string :user_ip
+      t.timestamps null: false
     end
   end
 end

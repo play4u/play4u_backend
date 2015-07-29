@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150728192511) do
+ActiveRecord::Schema.define(version: 20150729222900) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,6 +23,16 @@ ActiveRecord::Schema.define(version: 20150728192511) do
   end
 
   add_index "artists", ["name"], name: "index_artists_on_name", using: :btree
+
+  create_table "dj_song_requests", force: :cascade do |t|
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+    t.integer  "dj_id",                    null: false
+    t.integer  "listener_song_request_id", null: false
+  end
+
+  add_index "dj_song_requests", ["dj_id"], name: "index_dj_song_requests_on_dj_id", using: :btree
+  add_index "dj_song_requests", ["listener_song_request_id"], name: "index_dj_song_requests_on_listener_song_request_id", using: :btree
 
   create_table "djs", force: :cascade do |t|
     t.string   "stage_name", limit: 255, null: false
@@ -62,17 +72,19 @@ ActiveRecord::Schema.define(version: 20150728192511) do
   add_index "listeners", ["email"], name: "index_listeners_on_email", using: :btree
 
   create_table "locations", force: :cascade do |t|
-    t.integer "person_id"
-    t.string  "person_type", limit: 255
-    t.integer "latitude"
-    t.integer "longitude"
-    t.string  "user_ip",     limit: 255
+    t.integer  "person_id"
+    t.string   "person_type", limit: 255
+    t.integer  "latitude"
+    t.integer  "longitude"
+    t.string   "user_ip",     limit: 255
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
   end
 
   add_index "locations", ["person_type", "person_id"], name: "index_locations_on_person_type_and_person_id", using: :btree
 
   create_table "reservations", force: :cascade do |t|
-    t.datetime "request_timestamp", default: '2015-07-29 03:46:11'
+    t.datetime "request_timestamp", default: '2015-07-29 22:37:52'
     t.datetime "created_at",                                        null: false
     t.datetime "updated_at",                                        null: false
     t.integer  "event_id",                                          null: false
@@ -108,6 +120,8 @@ ActiveRecord::Schema.define(version: 20150728192511) do
 
   add_index "versions", ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id", using: :btree
 
+  add_foreign_key "dj_song_requests", "djs"
+  add_foreign_key "dj_song_requests", "listener_song_requests"
   add_foreign_key "listener_song_requests", "listeners"
   add_foreign_key "listener_song_requests", "songs"
   add_foreign_key "reservations", "djs"

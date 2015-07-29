@@ -44,7 +44,7 @@ module Service
           raise ArgumentError.new('Body is blank') if body.blank?
           
           data=Multimap.new         
-          data[:to]=to_address  
+          data[:to]=to 
           data[:from]=from
           data[:subject]=subject
           data[:body]=body

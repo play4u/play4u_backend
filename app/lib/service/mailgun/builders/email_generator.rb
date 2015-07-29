@@ -8,10 +8,12 @@ module Service
         
         def set_listener_song_request(lsr)
           @listener_song_request=lsr
+          self
         end
         
         def set_dj(dj)
           @dj=dj
+          self
         end
         
         # Call RESTful service to generate the email

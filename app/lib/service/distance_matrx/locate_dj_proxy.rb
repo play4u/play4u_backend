@@ -17,7 +17,7 @@ module Service
       end
       
       # Finds all DJs
-      # In the future, this will be optimized to use map/reduce concurrently
+      # TODO: optimize to use map/reduce concurrently
       # and probably will use Redis to cache the DJs found
       # Returns a list of DJs within a specified radius
       def locate!

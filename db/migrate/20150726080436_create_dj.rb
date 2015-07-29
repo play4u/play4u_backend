@@ -5,6 +5,7 @@ class CreateDj < ActiveRecord::Migration
       t.string :email, null:false, unique: true
       t.timestamps null: false
     end
+    
     add_index :djs, :email
   end
 end
