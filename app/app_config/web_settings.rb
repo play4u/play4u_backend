@@ -11,5 +11,13 @@ module AppConfig
     def self.email_song_request_route
       '/emails/song/request'
     end
+    
+    def self.email_cancel_reservation_route
+      '/email/reservation/cancel'
+    end
+    
+    def self.email_update_reservation_route
+      '/email/reservation/update'
+    end
   end
 end

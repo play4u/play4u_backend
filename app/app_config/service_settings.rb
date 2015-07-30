@@ -36,5 +36,21 @@ module AppConfig
     def self.song_approve_email_tag
       ENV['SONG_APPROVE_EMAIL_TAG']
     end
+    
+    def self.cancel_reservation_email_tag
+      ENV['CANCEL_RESERVATION_EMAIL_TAG']
+    end
+    
+    def self.cancel_reservation_email_subject
+      ENV['CANCEL_RESERVATION_EMAIL_SUBJECT']
+    end
+    
+    def self.update_reservation_email_tag
+      ENV['UPDATE_RESERVATION_EMAIL_TAG']
+    end
+    
+    def self.update_reservation_email_subject
+      ENV['UPDATE_RESERVATION_EMAIL_SUBJECT']
+    end
   end
 end

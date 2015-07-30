@@ -10,4 +10,12 @@ Rails.application.routes.draw do
   get AppConfig::WebSettings.email_song_request_route, 
   to: 'emails#generate_song_request'
    
+  get AppConfig::WebSettings.email_song_approve_route, 
+  to: 'emails#generate_song_approve'
+  
+  get AppConfig::WebSettings.email_cancel_reservation_route, 
+  to: 'emails#generate_cancel_reservation'
+  
+  get AppConfig::WebSettings.email_update_reservation_route, 
+  to: 'emails#generate_update_reservation'
 end

@@ -44,8 +44,8 @@ ActiveRecord::Schema.define(version: 20150729222900) do
   add_index "djs", ["email"], name: "index_djs_on_email", using: :btree
 
   create_table "events", force: :cascade do |t|
-    t.datetime "start",                   null: false
-    t.datetime "end"
+    t.datetime "start_time",              null: false
+    t.datetime "end_time"
     t.string   "description", limit: 255
     t.integer  "place_id",                null: false
     t.datetime "created_at",              null: false
@@ -87,7 +87,7 @@ ActiveRecord::Schema.define(version: 20150729222900) do
   add_index "locations", ["person_type", "person_id"], name: "index_locations_on_person_type_and_person_id", using: :btree
 
   create_table "reservations", force: :cascade do |t|
-    t.datetime "request_timestamp", default: '2015-07-30 00:55:47'
+    t.datetime "request_timestamp", default: '2015-07-30 04:50:12'
     t.datetime "created_at",                                        null: false
     t.datetime "updated_at",                                        null: false
     t.integer  "event_id",                                          null: false
