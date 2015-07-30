@@ -16,6 +16,17 @@ module Service
           self
         end
         
+        def generate_song_approval!
+          raise ArgumentError.new('DJ is required') if @dj.blank?
+          raise ArgumentError.new('Listener song request is required') if @listener_song_request.blank?
+          
+          RestClient.get AppConfig::WebSettings.play4u_base_url+
+          AppConfig::WebSettings.email_song_approve_route+
+          '?'+
+          'reservation_id='+
+          @reservation.id
+        end
+        
         # Call RESTful service to generate the email
         def generate_song_request!
           raise ArgumentError.new('DJ is required') if @dj.blank?
@@ -23,7 +34,8 @@ module Service
           
           RestClient.get AppConfig::WebSettings.play4u_base_url+
           AppConfig::WebSettings.email_song_request_route+
-          '?dj_id='+
+          '?'+
+          'dj_id='+
           @dj.id+
           '&'+
           'listener_song_request_id='+

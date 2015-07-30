@@ -7,5 +7,7 @@ class CreateEvent < ActiveRecord::Migration
       t.integer :place_id, null:false
       t.timestamps null: false
     end
+    
+    add_reference :events, :dj, foreign_key: true, index: true, null: false
   end
 end

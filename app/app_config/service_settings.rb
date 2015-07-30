@@ -25,8 +25,16 @@ module AppConfig
       ENV['SONG_REQUEST_EMAIL_SUBJECT']
     end
     
+    def self.song_approve_email_subject
+      ENV['SONG_APPROVE_EMAIL_SUBJECT']
+    end
+    
     def self.song_request_email_tag
       ENV['SONG_REQUEST_EMAIL_TAG']
+    end
+    
+    def self.song_approve_email_tag
+      ENV['SONG_APPROVE_EMAIL_TAG']
     end
   end
 end
