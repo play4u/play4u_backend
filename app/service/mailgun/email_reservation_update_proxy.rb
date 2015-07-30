@@ -1,6 +1,6 @@
 module Service
   module Mailgun
-    class EmailReserationUpdateProxy
+    class EmailReservationUpdateProxy
       attr_reader :reservation, :api_adapter, :email_generator
       
       def initialize(reservation)
@@ -10,15 +10,18 @@ module Service
       end
       
       def send!
-        body=@email_generator.generate_update_reservation!
+        body=@email_generator
+        .set_reservation(@reservation)
+        .generate_update_reservation!
         
         @api_adapter
-        .set_to(@listener_song_request.listener.email)
+        .set_to(@reservation.listener.email)
         .set_from(AppConfig::ServiceSettings.mailgun_email_address)
         .set_tag(AppConfig::ServiceSettings.update_reservation_email_tag)
         .set_subject(AppConfig::ServiceSettings.update_reservation_email_subject)
         .set_body(body)
-        .send!
+        
+        @api_adapter.send!
       end
     end
   end

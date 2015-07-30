@@ -24,10 +24,23 @@ class EmailsController < ApplicationController
   protected
   
   def query_params
-    @listener_song_request=ListenerSongRequest
-    .find(params[:listener_song_request_id].to_i)
+    begin
+      @listener_song_request=ListenerSongRequest
+      .find(params[:listener_song_request_id].to_i)
+    rescue ActiveRecord::RecordNotFound => e
+      @logger.debug e.message+'\n'+e.backtrace.inspect
+    end
     
-    @dj=Dj.find(params[:dj_id].to_i)
-    @reservation=Reservation.find(params[:reservation_id].to_i)
+    begin
+      @dj=Dj.find(params[:dj_id].to_i)
+    rescue ActiveRecord::RecordNotFound => e
+      @logger.debug e.message+'\n'+e.backtrace.inspect
+    end
+    
+    begin
+      @reservation=Reservation.find(params[:reservation_id].to_i)
+    rescue ActiveRecord::RecordNotFound => e
+      @logger.debug e.message+'\n'+e.backtrace.inspect
+    end
   end
 end
