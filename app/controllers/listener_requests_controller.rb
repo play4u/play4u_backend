@@ -1,4 +1,5 @@
 class ListenerRequestsController < ApplicationController
+  before_action :strong_params
   before_action :check_params, only: [:request_song]
   
   def request_song   
@@ -10,6 +11,10 @@ class ListenerRequestsController < ApplicationController
   # protected
   #
   protected
+  def strong_params
+    params.require(:artist).permit(:name)
+    params.require(:song).permit(:name)
+  end
   
   def check_params
     @listener=Listener.find_by(email: params[:email])
