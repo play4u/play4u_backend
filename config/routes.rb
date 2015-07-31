@@ -2,8 +2,13 @@ require_relative "#{Rails.root}/app/app_config/web_settings"
 
 Rails.application.routes.draw do
   resources :djs do
-    resources :reservations
+    resources :reservations, except: [:new, :edit]
   end
+  
+  resources :djs, except: [:new, :edit]
+  resources :listeners, except: [:new, :edit]
+
+  post '/artists/:artist_name/songs/:song_name/request', to: 'listener_requests#request_song'
 
   get AppConfig::WebSettings.email_song_request_route, 
   to: 'emails#generate_song_request'

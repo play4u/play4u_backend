@@ -24,31 +24,31 @@ module Service
         def generate_update_reservation!
           raise ArgumentError.new('Reservation is required') if @reservation.blank?
           
-          RestClient.get AppConfig::WebSettings.play4u_base_url+
-          AppConfig::WebSettings.email_update_reservation_route+
-          '?'+
-          'reservation_id='+
-          @reservation.id
+          url=AppConfig::WebSettings.play4u_base_url+
+          "#{AppConfig::WebSettings.email_update_reservation_route}?"+
+          "reservation_id=#{@reservation.id}"
+          
+          RestClient.get url
         end
         
         def generate_cancel_reservation!
           raise ArgumentError.new('Reservation is required') if @reservation.blank?
           
-          RestClient.get AppConfig::WebSettings.play4u_base_url+
-          AppConfig::WebSettings.email_cancel_reservation_route+
-          '?'+
-          'reservation_id='+
-          @reservation.id
+          url=AppConfig::WebSettings.play4u_base_url+
+          "#{AppConfig::WebSettings.email_cancel_reservation_route}?"+
+          "reservation_id=#{@reservation.id}"
+          
+          RestClient.get url  
         end
         
         def generate_song_approval!
           raise ArgumentError.new('Reservation is required') if @reservation.blank?
           
-          RestClient.get AppConfig::WebSettings.play4u_base_url+
-          AppConfig::WebSettings.email_song_approve_route+
-          '?'+
-          'reservation_id='+
-          @reservation.id
+          url = AppConfig::WebSettings.play4u_base_url+
+          "#{AppConfig::WebSettings.email_song_approve_route}?"+
+          "reservation_id=#{@reservation.id}"
+           
+          RestClient.get url
         end
         
         # Call RESTful service to generate the email
@@ -56,14 +56,12 @@ module Service
           raise ArgumentError.new('DJ is required') if @dj.blank?
           raise ArgumentError.new('Listener song request is required') if @listener_song_request.blank?
           
-          RestClient.get AppConfig::WebSettings.play4u_base_url+
-          AppConfig::WebSettings.email_song_request_route+
-          '?'+
-          'dj_id='+
-          @dj.id+
-          '&'+
-          'listener_song_request_id='+
-          @listener_song_request.id
+          url=AppConfig::WebSettings.play4u_base_url+
+          "#{AppConfig::WebSettings.email_song_request_route}?"+
+          "dj_id=#{@dj.id}&"+
+          "listener_song_request_id=#{@listener_song_request.id}"
+          
+          RestClient.get url
         end
       end
     end

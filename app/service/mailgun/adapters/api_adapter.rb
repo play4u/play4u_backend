@@ -37,11 +37,11 @@ module Service
         
         def send!
           url=@url_builder.build
-          raise ArgumentError.new("URL is missing") if url.blank?
-          raise ArgumentError.new('To is blank') if to.blank?
-          raise ArgumentError.new('From is blank') if from.blank?
-          raise ArgumentError.new('Subject is blank') if subject.blank?
-          raise ArgumentError.new('Body is blank') if body.blank?
+          raise ArgumentError.new("URL is required") if url.blank?
+          raise ArgumentError.new('To is required') if to.blank?
+          raise ArgumentError.new('From is required') if from.blank?
+          raise ArgumentError.new('Subject is required') if subject.blank?
+          raise ArgumentError.new('Body is required') if body.blank?
           
           data=Multimap.new         
           data[:to]=to 

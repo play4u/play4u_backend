@@ -12,35 +12,31 @@ class ReservationsController < ApplicationController
       .limit(AppConfig::ViewSettings.reservations_row_limit)
       .to_a
       
-      render json: @reservations
+      render json: {reservations: @reservations}
     else
-      render json: []
+      render plain: 'DJ not found', :status => :internal_server_error
     end
-  end
-
-  def new
-    render nothing: true
   end
 
   def create
     @reservation=Reservation.create(start_time: @start_time,
     end_time: @end_time,
     description: @description,
-    place_id: @place_id)
+    place_id: @place_id,
+    dj_id: @dj.id,
+    listener_id: @listener_song_request.listener.id,
+    song_id: @listener_song_request.song.id
+    )
     
     Service::Mailgun::EmailSongApprovalProxy
-    .new(@dj,@listener_song_request)
+    .new(@reservation)
     .send!
     
-    render plain: 'OK', :status => :ok
+    render json: {reservation: @reservation}
   end
 
   def show
-    render json: @reservation
-  end
-
-  def edit
-    render nothing: true
+    render json: {reservation: @reservation}
   end
 
   def update
@@ -50,18 +46,28 @@ class ReservationsController < ApplicationController
        @reservation.description=@description if @description
        @reservation.place_id=@place_id if @place_id
        @reservation.save!
-      render plain: 'OK', :status => :ok
+       
+       Service::Mailgun::EmailReservationUpdateProxy
+       .new(@reservation)
+       .send!
+       
+      render json: {reservation: @reservation}, :status => :ok
     else
-      render plain: 'ERROR', :status => :internal_server_error
+      render plain: 'Reservation not found', :status => :internal_server_error
     end
   end
 
   def destroy
     if @reservation
-      @reservation.destroy 
-      render plain: 'OK', :status => :ok
+      @reservation.destroy
+       
+      Service::Mailgun::EmailCancelReservationProxy
+       .new(@reservation)
+       .send!
+       
+      render json: {reservation: @reservation}, :status => :ok
     else
-      render plain: 'ERROR', :status => :internal_server_error
+      render plain: 'Reservation not found', :status => :internal_server_error
     end
   end
   
@@ -86,7 +92,8 @@ class ReservationsController < ApplicationController
     end
     
     begin
-      @listener_song_request=Listener.find(params[:listener_song_request_id].to_i)
+      @listener_song_request=ListenerSongRequest
+      .find(params[:listener_song_request_id].to_i)
     rescue ActiveRecord::RecordNotFound => e
       @logger.debug e.message + '\n' + e.backtrace.inspect
     end
