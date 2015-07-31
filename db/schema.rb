@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150729222900) do
+ActiveRecord::Schema.define(version: 20150731184154) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -36,12 +36,9 @@ ActiveRecord::Schema.define(version: 20150729222900) do
 
   create_table "djs", force: :cascade do |t|
     t.string   "stage_name", limit: 255, null: false
-    t.string   "email",      limit: 255, null: false
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
   end
-
-  add_index "djs", ["email"], name: "index_djs_on_email", using: :btree
 
   create_table "listener_song_requests", force: :cascade do |t|
     t.datetime "created_at",  null: false
@@ -55,24 +52,30 @@ ActiveRecord::Schema.define(version: 20150729222900) do
 
   create_table "listeners", force: :cascade do |t|
     t.string   "first_name", limit: 255
-    t.string   "email",      limit: 255, null: false
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
   end
 
-  add_index "listeners", ["email"], name: "index_listeners_on_email", using: :btree
-
   create_table "locations", force: :cascade do |t|
     t.integer  "person_id"
     t.string   "person_type", limit: 255
-    t.integer  "latitude"
-    t.integer  "longitude"
+    t.float    "latitude"
+    t.float    "longitude"
     t.string   "user_ip",     limit: 255
     t.datetime "created_at",              null: false
     t.datetime "updated_at",              null: false
   end
 
   add_index "locations", ["person_type", "person_id"], name: "index_locations_on_person_type_and_person_id", using: :btree
+
+  create_table "person_details", force: :cascade do |t|
+    t.string  "email",       limit: 255
+    t.integer "person_id",               null: false
+    t.string  "person_type", limit: 255, null: false
+  end
+
+  add_index "person_details", ["email"], name: "index_person_details_on_email", using: :btree
+  add_index "person_details", ["person_type", "person_id"], name: "index_person_details_on_person_type_and_person_id", using: :btree
 
   create_table "reservations", force: :cascade do |t|
     t.datetime "created_at",              null: false

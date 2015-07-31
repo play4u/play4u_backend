@@ -11,7 +11,7 @@ module Util
     end
     
     def to_s
-      latitude.to_s+","+longitude.to_s
+      "#{latitude},#{longitude}"
     end
   end
 end
