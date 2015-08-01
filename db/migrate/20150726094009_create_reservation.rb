@@ -8,7 +8,7 @@ class CreateReservation < ActiveRecord::Migration
       t.integer :place_id, null:false
     end
     
-    add_reference :reservations, :dj, index: true, foreign_key: true, null: false
+    add_reference :reservations, :music_jockey, index: true, foreign_key: true, null: false
     add_reference :reservations, :listener, index: true, foreign_key: true, null: false
     add_reference :reservations, :song, index: true, foreign_key: true, null: false
   end

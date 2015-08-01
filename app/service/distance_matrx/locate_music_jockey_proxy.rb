@@ -4,7 +4,7 @@ require 'json'
 
 module Service
   module DistanceMatrix
-    class LocateDJProxy
+    class LocateMusicJockeyProxy
       SEARCH_RADIUS=5
       
       attr_reader :search_radius, :api_adapter, :listener
@@ -21,28 +21,28 @@ module Service
       # and probably will use Redis to cache the DJs found
       # Returns a list of DJs within a specified radius
       def locate!
-        djs_found=[]
+        mjs_found=[]
         
-        Dj.find_each do |dj|
+        MusicJockey.find_each do |mj|
           distance=@api_adapter
           .set_origin(@listener.location.get_position)
-          .set_destination(dj.location.get_position)
+          .set_destination(mj.location.get_position)
           .send!
           .get_distance
           
           if distance <= @search_radius
-            djs_found << dj
+            mjs_found << mj
           else
              @logger.warn %Q(Distance NOT found 
              Listener id: #{@listener.id} 
-             DJ id: #{dj.id} 
+             Music jockey id: #{mj.id} 
              Origin: #{@listener.location.get_position}
-             Destination: #{dj.location.get_position}
+             Destination: #{mj.location.get_position}
              )
           end
         end
         
-        djs_found
+        mjs_found
       end
     end
   end

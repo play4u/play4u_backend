@@ -5,7 +5,7 @@ FactoryGirl.define do
     place_id    123
     description 'Will play asap!'
     
-    association :dj, :strategy => :build
+    association :music_jockey, :strategy => :build
     association :song, :strategy => :build
     association :listener, :strategy => :build
   end

@@ -32,7 +32,7 @@ class EmailsController < ApplicationController
     end
     
     begin
-      @dj=Dj.find(params[:dj_id].to_i)
+      @mj=MusicJockey.find(params[:music_jockey_id].to_i)
     rescue ActiveRecord::RecordNotFound => e
       @logger.debug e.message+'\n'+e.backtrace.inspect
     end

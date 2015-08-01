@@ -1,7 +1,7 @@
 class Reservation < ActiveRecord::Base
   has_paper_trail
   belongs_to :listener
-  belongs_to :dj
+  belongs_to :music_jockey
   belongs_to :song
   
   def to_s

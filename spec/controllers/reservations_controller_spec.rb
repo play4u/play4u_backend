@@ -5,7 +5,7 @@ require 'json'
 describe ReservationsController, type: :controller do
   render_views
   let(:reservation){FactoryGirl.create(:reservation)}
-  let(:dj){reservation.dj}
+  let(:mj){reservation.music_jockey}
   let(:listener){reservation.listener}
   
   before do
@@ -28,7 +28,8 @@ describe ReservationsController, type: :controller do
   context 'cancel reservation' do
     it 'shall cancel a reservation' do
       expect(Reservation.exists?(reservation.id)).to be true
-      delete 'destroy', {id: reservation.id, dj_id: reservation.dj.id}
+      delete 'destroy', {id: reservation.id, 
+        music_jockey_id: reservation.music_jockey.id}
       assert_response :success
       expect(Reservation.exists?(reservation.id)).to be false
     end
@@ -41,7 +42,9 @@ describe ReservationsController, type: :controller do
     end
     
     it 'shall update a reservation' do
-      put 'update', {id: reservation.id, dj_id: reservation.dj.id, place_id: 15}
+      put 'update', {id: reservation.id, 
+        music_jockey_id: reservation.music_jockey.id, place_id: 15}
+        
       assert_response :success
       expect(Reservation.exists?(reservation.id)).to be true
       
@@ -51,7 +54,7 @@ describe ReservationsController, type: :controller do
   end
   
   context 'song approve' do
-    let(:dj){FactoryGirl.create(:dj)}
+    let(:mj){FactoryGirl.create(:music_jockey)}
     let(:listener_song_request){FactoryGirl.create(:listener_song_request)}
     let(:place_id){561332}
     let(:response_json_hash){JSON.parse(response.body)}
@@ -71,7 +74,7 @@ describe ReservationsController, type: :controller do
         end_minute:30,
         description: 'nice event',
         place_id: place_id,
-        dj_id: dj.id,
+        music_jockey_id: mj.id,
         listener_song_request_id: listener_song_request.id  
       }
     }
@@ -81,7 +84,7 @@ describe ReservationsController, type: :controller do
       assert_response :success
       expect(response.body.length).to be > 0
       expect(new_reservation.description).to eq('nice event')
-      expect(new_reservation.dj.id).to eq(dj.id)
+      expect(new_reservation.music_jockey.id).to eq(mj.id)
       expect(new_reservation.listener.id).to eq(listener_song_request.listener.id)
       expect(new_reservation.place_id).to eq(place_id)
       

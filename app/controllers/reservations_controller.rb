@@ -1,20 +1,22 @@
 class ReservationsController < ApplicationController
   before_action :controller_params
+  RESERVATION_NOT_FOUND_ERROR_MESSAGE='Reservation not found'
+  MJ_NOT_FOUND_ERROR_MESSAGE='Music jockey not found'
   
   # Event start/end times are stored in UTC/GMT timezone
   RAILS_TIMEZONE='+00:00'
   
   def index
-    if @dj
+    if @mj
       @reservations=Reservation
-      .where('dj_id=?',@dj.id)
+      .where('music_jockey_id=?',@mj.id)
       .order(:start_time => :desc, :end_time => :desc)
       .limit(AppConfig::ViewSettings.reservations_row_limit)
       .to_a
       
       render json: {reservations: @reservations}
     else
-      render plain: 'DJ not found', :status => :internal_server_error
+      render plain: MJ_NOT_FOUND_ERROR_MESSAGE, :status => :internal_server_error
     end
   end
 
@@ -23,7 +25,7 @@ class ReservationsController < ApplicationController
     end_time: @end_time,
     description: @description,
     place_id: @place_id,
-    dj_id: @dj.id,
+    music_jockey_id: @mj.id,
     listener_id: @listener_song_request.listener.id,
     song_id: @listener_song_request.song.id
     )
@@ -86,7 +88,7 @@ class ReservationsController < ApplicationController
     @place_id=params[:place_id].to_i
     
     begin
-      @dj=Dj.find(params[:dj_id].to_i)
+      @mj=MusicJockey.find(params[:music_jockey_id].to_i)
     rescue
       @logger.debug e.message + '\n' + e.backtrace.inspect
     end

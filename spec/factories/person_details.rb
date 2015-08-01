@@ -1,11 +1,11 @@
 FactoryGirl.define do
   factory :person_detail do
     email 'user@gmail.com'
-    with_dj
+    with_mj
     
-    trait :with_dj do
+    trait :with_mj do
       before(:create) do |person_detail|
-        person_detail.person=FactoryGirl.create(:dj)
+        person_detail.person=FactoryGirl.create(:music_jockey)
       end
     end
     

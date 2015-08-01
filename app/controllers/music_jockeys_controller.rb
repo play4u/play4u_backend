@@ -1,13 +1,13 @@
-class DjsController < ApplicationController
+class MusicJockeysController < ApplicationController
   include PeopleController
-  DJ_NOT_FOUND_ERROR_MESSAGE='DJ not found'
+  MUSIC_JOCKEY_NOT_FOUND_ERROR_MESSAGE='Music jockey not found'
   
   def destroy
     if @person
       @person.destroy
       render_person
     else
-      render plain: DJ_NOT_FOUND_ERROR_MESSAGE, :status => :internal_server_error
+      render plain: MUSIC_JOCKEY_NOT_FOUND_ERROR_MESSAGE, :status => :internal_server_error
     end
   end
   
@@ -19,25 +19,25 @@ class DjsController < ApplicationController
       @person.save!
       render_person
     else
-      render plain: DJ_NOT_FOUND_ERROR_MESSAGE, :status => :internal_server_error
+      render plain: MUSIC_JOCKEY_NOT_FOUND_ERROR_MESSAGE, :status => :internal_server_error
     end
   end
   
   def define_person
-    @person=Dj
+    @person=MusicJockey
     .where(stage_name: params[:stage_name])
     .first_or_initialize
   end
   
   def render_person
-    render json: {dj: @person}
+    render json: {music_jockey: @person}
   end
   
   def show
     if @person
       render_person
     else
-      render plain: DJ_NOT_FOUND_ERROR_MESSAGE, :status => :internal_server_error
+      render plain: MUSIC_JOCKEY_NOT_FOUND_ERROR_MESSAGE, :status => :internal_server_error
     end
   end
 end

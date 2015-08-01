@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe EmailsController, type: :controller do
   let(:reservation){FactoryGirl.create(:reservation)}
-  let(:dj){FactoryGirl.create(:dj)}
+  let(:mj){FactoryGirl.create(:music_jockey)}
   let(:listener_song_request){FactoryGirl.create(:listener_song_request)}
   render_views
 
@@ -39,7 +39,7 @@ RSpec.describe EmailsController, type: :controller do
   context 'song request email' do  
    it 'shall generate an email' do
       get :generate_song_request, 
-      {dj_id: dj.id, 
+      {music_jockey_id: mj.id, 
         listener_song_request_id: listener_song_request.id}
         
       assert_response :success

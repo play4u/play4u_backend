@@ -1,6 +1,6 @@
-class CreateDj < ActiveRecord::Migration
+class CreateMusicJockey < ActiveRecord::Migration
   def change
-    create_table :djs do |t|
+    create_table :music_jockeys do |t|
       t.string :stage_name, null:false, unique: true
       t.timestamps null: false
     end

@@ -24,16 +24,16 @@ module Controllers
         longitude: @position.longitude, latitude: @position.latitude)
         
         @logger.info('Created request: '+@request.to_json)
-        @djs_found = Service::DistanceMatrix::LocateDJProxy.new(@listener).locate!
+        @music_jockeys_found = Service::DistanceMatrix::LocateMusicJockeyProxy.new(@listener).locate!
         
-        # Record the attempted song requests for each DJ
+        # Record the attempted song requests for each MJ
         # TODO: Will optimize in the future to use concurrency
-        @djs_found.each do |dj|
-          DjSongRequest.create(dj_id: dj.id, listener_song_request_id: @request.id)
+        @music_jockeys_found.each do |mj|
+          MusicJockeyRequest.create(music_jockey_id: mj.id, listener_song_request_id: @request.id)
         end
         
         # TODO: use concurrency
-        Service::Mailgun::EmailSongRequestProxy.new(@djs_found,@request).send!
+        Service::Mailgun::EmailSongRequestProxy.new(@music_jockeys_found,@request).send!
         @request
       end
     end
