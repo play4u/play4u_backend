@@ -31,10 +31,6 @@ module Controllers
         @music_jockeys_found.each do |mj|
           MusicJockeyRequest.create(music_jockey_id: mj.id, listener_song_request_id: @request.id)
         end
-        
-        # TODO: use concurrency
-        Service::Mailgun::EmailSongRequestProxy.new(@music_jockeys_found,@request).send!
-        @request
       end
     end
   end

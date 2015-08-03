@@ -30,10 +30,6 @@ class ReservationsController < ApplicationController
     song_id: @listener_song_request.song.id
     )
     
-    Service::Mailgun::EmailSongApprovalProxy
-    .new(@reservation)
-    .send!
-    
     render json: {reservation: @reservation}
   end
 
@@ -49,10 +45,6 @@ class ReservationsController < ApplicationController
        @reservation.place_id=@place_id if @place_id
        @reservation.save!
        
-       Service::Mailgun::EmailReservationUpdateProxy
-       .new(@reservation)
-       .send!
-       
       render json: {reservation: @reservation}, :status => :ok
     else
       render plain: 'Reservation not found', :status => :internal_server_error
@@ -62,10 +54,6 @@ class ReservationsController < ApplicationController
   def destroy
     if @reservation
       @reservation.destroy
-       
-      Service::Mailgun::EmailCancelReservationProxy
-       .new(@reservation)
-       .send!
        
       render json: {reservation: @reservation}, :status => :ok
     else
