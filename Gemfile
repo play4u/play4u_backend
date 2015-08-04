@@ -1,5 +1,11 @@
 source 'https://rubygems.org'
-ruby '2.2.2', :engine => 'jruby', :engine_version => '9.0.0.0.rc2'
+group :production do
+  ruby '2.2.2', :engine => 'jruby', :engine_version => '9.0.0.0'
+end
+
+group :development, :test do
+  ruby '2.2.2', :engine => 'jruby', :engine_version => '9.0.0.0.rc2'
+end
 
 # PUMA web server
 gem 'puma'
@@ -7,6 +13,7 @@ gem 'puma'
 gem 'paper_trail', '~> 3.0.8'
 gem 'composite_primary_keys'
 gem 'multimap', '~> 1.1.3'
+gem 'redis-rails', '~> 4.0.0'
 
 # Ensure clean DB state between tests
 gem 'database_cleaner', '~> 1.4.1'
