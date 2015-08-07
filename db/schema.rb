@@ -25,6 +25,8 @@ ActiveRecord::Schema.define(version: 20150731184154) do
   add_index "artists", ["name"], name: "index_artists_on_name", using: :btree
 
   create_table "listener_song_requests", force: :cascade do |t|
+    t.integer  "longitude",   null: false
+    t.integer  "latitude",    null: false
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
     t.integer  "listener_id", null: false
@@ -43,13 +45,16 @@ ActiveRecord::Schema.define(version: 20150731184154) do
   create_table "locations", force: :cascade do |t|
     t.integer  "person_id"
     t.string   "person_type", limit: 255
-    t.float    "latitude"
-    t.float    "longitude"
-    t.string   "user_ip",     limit: 255
+    t.float    "latitude",                null: false
+    t.float    "longitude",               null: false
+    t.string   "socket_ip",   limit: 255, null: false
+    t.integer  "socket_port",             null: false
     t.datetime "created_at",              null: false
     t.datetime "updated_at",              null: false
   end
 
+  add_index "locations", ["latitude"], name: "index_locations_on_latitude", using: :btree
+  add_index "locations", ["longitude"], name: "index_locations_on_longitude", using: :btree
   add_index "locations", ["person_type", "person_id"], name: "index_locations_on_person_type_and_person_id", using: :btree
 
   create_table "music_jockey_song_requests", force: :cascade do |t|
