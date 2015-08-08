@@ -17,16 +17,13 @@ class ListenersController < ApplicationController
     .first_or_create!
   end
   
-  def render_person
-    render json: {listener: @person}
-  end
-  
   def update
+    update_person
+    
     if @person
       @person.first_name=params[:first_name] if params[:first_name].present?
-      @person.email=params[:email] if params[:email].present?
       @person.save!
-      render json: {person: @person}
+      render_person
     else
       render plain: LISTENER_NOT_FOUND_ERROR_MESSAGE, :status => :internal_server_error
     end

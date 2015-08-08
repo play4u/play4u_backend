@@ -11,7 +11,7 @@ module Util
     end
     
     def to_s
-      "#{latitude},#{longitude}"
+      {longitude: longitude, latitude: latitude}.to_json
     end
   end
 end
