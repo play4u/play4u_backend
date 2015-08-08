@@ -5,8 +5,8 @@ Rails.application.routes.draw do
     resources :reservations, except: [:new, :edit]
   end
   
-  resources :music_jockeys, except: [:new, :edit]
-  resources :listeners, except: [:new, :edit]
+  resources :music_jockeys, except: [:new, :edit, :index]
+  resources :listeners, except: [:new, :edit, :index]
 
   post '/artists/:artist_name/songs/:song_name/request', to: 'listener_requests#request_song'
 end
