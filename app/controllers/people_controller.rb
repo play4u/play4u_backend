@@ -6,8 +6,8 @@ module PeopleController
   
   included do
     before_action :request_params
-    before_action :fetch_position, :fetch_person
-    before_action :update_location, only: [:show, :update, :create]
+    before_action :retrieve_position, :fetch_person
+    after_action :update_location, only: [:show, :update, :create]
     
     def create
       create_person
@@ -20,7 +20,7 @@ module PeopleController
     protected
     def render_person
       render json: {@person.person_detail.person_type.to_s.downcase.to_sym => 
-        {person: @person, location: @person.location}}
+        {person: @person}}
     end
     
     def create_person
@@ -53,9 +53,7 @@ module PeopleController
     end
     
     def update_location
-      if @person.nil?
-        @logger.error 'Could not update location because person was not found'
-      elsif @person.location
+      if @person.location.present?
         @person
         .location
         .update_attributes(latitude: @position.latitude, 
@@ -64,18 +62,16 @@ module PeopleController
         socket_port: @user_port
         )
       else
-        location=Location.create!(latitude: @position.latitude, 
+        Location.create!(latitude: @position.latitude, 
         longitude: @position.longitude,
         socket_ip: @user_ip,
-        socket_port: @user_port
+        socket_port: @user_port,
+        person_id: @person.id
         )
-        
-        @person.location=location
-        @person.save!
       end
     end
     
-    def fetch_position
+    def retrieve_position
       if @latitude.present? && @longitude.present?
         @position=Util::Position.new(@latitude,@longitude)
       else
