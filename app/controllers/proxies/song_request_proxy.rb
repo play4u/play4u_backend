@@ -10,8 +10,8 @@ module Controllers
     class SongRequestProxy
       attr_reader :listener, :song, :search_perimeter
       
-      def initialize(listener, song)
-        @search_radius=AppConfig::DomainSettings.search_radius # miles
+      def initialize(listener,song,search_radius)
+        @search_radius=search_radius
         @listener=listener
         
         @search_perimeter=Controllers::Proxies::Facades::SearchPerimeter
