@@ -9,12 +9,21 @@ module PeopleController
     before_action :fetch_position, :fetch_person
     before_action :update_location, only: [:show, :update, :create]
     
+    def create
+      create_person
+      render_person
+    end
+    
+    # 
+    # protected
+    #
+    protected
     def render_person
       render json: {@person.person_detail.person_type.to_s.downcase.to_sym => 
         {person: @person, location: @person.location}}
     end
     
-    def create
+    def create_person
       define_person
       
       person_detail=PersonDetail
@@ -23,14 +32,8 @@ module PeopleController
     
       person_detail.person=@person
       person_detail.save!
-      
-      render_person
     end
     
-    # 
-    # protected
-    #
-    protected
     def request_params
       @id=params[:id].to_i if params[:id].present?
       @longitude=params[:longitude].to_f
@@ -45,6 +48,7 @@ module PeopleController
     end
     
     def update_person
+      create_person if @person.nil?
       @person.email=@email if @person && @email.present?
     end
     
