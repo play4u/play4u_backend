@@ -4,8 +4,6 @@ class CreateLocation < ActiveRecord::Migration
       t.references :person, polymorphic: true, index: true
       t.float :latitude, index: true, null: false
       t.float :longitude, index: true, null: false
-      t.string :socket_ip, null: false
-      t.integer :socket_port, null: false
       t.timestamps null: false
     end
   end

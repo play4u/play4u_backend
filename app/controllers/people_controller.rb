@@ -39,8 +39,6 @@ module PeopleController
       @longitude=params[:longitude].to_f
       @latitude=params[:latitude].to_f
       @email=params[:email]
-      @user_ip=params[:socket_ip]
-      @user_port=params[:socket_port].to_i
     end
     
     def fetch_person
@@ -58,14 +56,10 @@ module PeopleController
         .location
         .update_attributes(latitude: @position.latitude, 
         longitude: @position.longitude,
-        socket_ip: @user_ip,
-        socket_port: @user_port
         )
       else
         Location.create!(latitude: @position.latitude, 
         longitude: @position.longitude,
-        socket_ip: @user_ip,
-        socket_port: @user_port,
         person_id: @person.id
         )
       end

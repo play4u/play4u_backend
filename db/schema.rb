@@ -47,8 +47,6 @@ ActiveRecord::Schema.define(version: 20150731184154) do
     t.string   "person_type", limit: 255
     t.float    "latitude",                null: false
     t.float    "longitude",               null: false
-    t.string   "socket_ip",   limit: 255, null: false
-    t.integer  "socket_port",             null: false
     t.datetime "created_at",              null: false
     t.datetime "updated_at",              null: false
   end
