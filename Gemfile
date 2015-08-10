@@ -14,6 +14,8 @@ gem 'paper_trail', '~> 3.0.8'
 gem 'composite_primary_keys'
 gem 'multimap', '~> 1.1.3'
 gem 'redis-rails', '~> 4.0.0'
+gem 'business_time', '~> 0.7.4'
+gem 'holidays', '~> 2.2.0'
 
 # Ensure clean DB state between tests
 gem 'database_cleaner', '~> 1.4.1'
