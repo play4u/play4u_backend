@@ -5,6 +5,6 @@ class MusicJockey < ActiveRecord::Base
   has_many :reservations
   
   def to_s
-    {:location => location.to_json, :person_detail => person_detail.to_json, :num_reservations => reservations.count}.to_json
+    to_json
   end
 end

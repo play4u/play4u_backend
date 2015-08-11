@@ -5,6 +5,6 @@ class Listener < ActiveRecord::Base
   has_many :reservations
   
   def to_s
-    to_json
+    {first_name: first_name}.merge({location: location, person_detail: person_detail.to_s}).to_json
   end
 end

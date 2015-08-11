@@ -14,7 +14,7 @@ class ListenersController < ApplicationController
   def define_person
      @person=Listener
     .where(first_name: params[:first_name])
-    .first_or_create!
+    .first_or_initialize
   end
   
   def update

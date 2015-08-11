@@ -7,7 +7,7 @@ module PeopleController
   included do
     before_action :request_params
     before_action :retrieve_position, :fetch_person
-    before_action :update_location, only: [:show, :update]
+    after_action :update_location, only: [:show, :update, :create]
     
     def create
       create_person
@@ -20,11 +20,11 @@ module PeopleController
     protected
     def render_person
       render json: {@person.person_detail.person_type.to_s.downcase.to_sym => 
-        {person: @person, person_detail: @person.person_detail, location: @person.location}}
+        {person: @person}}
     end
     
     def create_person
-      @person=define_person
+      define_person
       
       person_detail=PersonDetail
       .where(email: @email)
@@ -32,8 +32,6 @@ module PeopleController
     
       person_detail.person=@person
       person_detail.save!
-      
-      update_location
     end
     
     def request_params
@@ -60,18 +58,16 @@ module PeopleController
         longitude: @position.longitude,
         )
       else
-        location=Location.new
-        location.latitude=@position.latitude 
-        location.longitude=@position.longitude
-        @person.location=location
-        @person.save!
+        Location.create!(latitude: @position.latitude, 
+        longitude: @position.longitude,
+        person_id: @person.id
+        )
       end
     end
     
     def retrieve_position
       if @latitude.present? && @longitude.present?
         @position=Util::Position.new(@latitude,@longitude)
-        @logger.info("Location: #{@position}")
       else
         @logger.error("[PeopleController] Position is missing. Longitude: #{@longitude}. Latitude: #{@latitude}")
         render plain: POSITION_NOT_FOUND_ERROR_MESSAGE, :status => :internal_server_error
