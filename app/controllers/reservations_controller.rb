@@ -9,7 +9,7 @@ class ReservationsController < ApplicationController
   def index
     if @mj
       @reservations=Reservation
-      .where('music_jockey_id=?',@mj.id)
+      .where(music_jockey_id: @mj.id)
       .order(:start_time => :desc, :end_time => :desc)
       .limit(AppConfig::ViewSettings.reservations_row_limit)
       .to_a
@@ -21,7 +21,7 @@ class ReservationsController < ApplicationController
   end
 
   def create
-    @reservation=Reservation.create(start_time: @start_time,
+    @reservation=Reservation.create!(start_time: @start_time,
     end_time: @end_time,
     description: @description,
     place_id: @place_id,
@@ -76,14 +76,14 @@ class ReservationsController < ApplicationController
     @place_id=params[:place_id].to_i
     
     begin
-      @mj=MusicJockey.find(params[:music_jockey_id].to_i)
+      @mj=MusicJockey.find(params[:music_jockey_id].to_i.abs)
     rescue
       @logger.debug e.message + '\n' + e.backtrace.inspect
     end
     
     begin
       @listener_song_request=ListenerSongRequest
-      .find(params[:listener_song_request_id].to_i)
+      .find(params[:listener_song_request_id].to_i.abs)
     rescue ActiveRecord::RecordNotFound => e
       @logger.debug e.message + '\n' + e.backtrace.inspect
     end
@@ -92,11 +92,11 @@ class ReservationsController < ApplicationController
   def start_time_param
     Time
     .new(
-    params[:start_year].to_i,
-    params[:start_month].to_i,
-    params[:start_day].to_i,
-    params[:start_hour].to_i,
-    params[:start_minute].to_i,
+    params[:start_year].to_i.abs,
+    params[:start_month].to_i.abs,
+    params[:start_day].to_i.abs,
+    params[:start_hour].to_i.abs,
+    params[:start_minute].to_i.abs,
     0,
     RAILS_TIMEZONE
     )
@@ -107,11 +107,11 @@ class ReservationsController < ApplicationController
   def end_time_param
     Time
     .new(
-    params[:end_year].to_i,
-    params[:end_month].to_i,
-    params[:end_day].to_i,
-    params[:end_hour].to_i,
-    params[:end_minute].to_i,
+    params[:end_year].to_i.abs,
+    params[:end_month].to_i.abs,
+    params[:end_day].to_i.abs,
+    params[:end_hour].to_i.abs,
+    params[:end_minute].to_i.abs,
     0,
     RAILS_TIMEZONE
     )

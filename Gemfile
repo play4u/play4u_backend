@@ -10,6 +10,7 @@ end
 # PUMA web server
 gem 'puma'
 
+gem 'thread'
 gem 'paper_trail', '~> 3.0.8'
 gem 'composite_primary_keys'
 gem 'multimap', '~> 1.1.3'

@@ -23,23 +23,28 @@ module Controllers
       
       # Request a song from multiple MJs
       # Returns the request
-      def request!
-        @request=ListenerSongRequest.create!(listener: @listener, song: @song, 
-        longitude: @listener.location.longitude, latitude: @listener.location.latitude)
-        
+      def request! 
+        @request=ListenerSongRequest.new
+        @request.listener=@listener
+        @request.song=@song
+        @request.longitude=@listener.location.longitude
+        @request.latitude=@listener.location.latitude
+        @request.save!
         @logger.info('Created request: '+@request.to_json)
         
-        # Record the attempted song requests for each MJ
-        # TODO: Will optimize in the future to use concurrency
-        MusicJockey
-        .joins(:location)
-        .where(Location.arel_table[:latitude].gteq(@search_perimeter.bottom))
-        .where(Location.arel_table[:latitude].lteq(@search_perimeter.top))
-        .where(Location.arel_table[:longitude].gteq(@search_perimeter.left))
-        .where(Location.arel_table[:longitude].lteq(@search_perimeter.right)) 
-        .find_each do |mj|
-          MusicJockeySongRequest.create!(music_jockey_id: mj.id, listener_song_request_id: @request.id)
-        end
+        AppConfig::Scalability::THREAD_POOL.process{
+          MusicJockey
+          .joins(:location)
+          .where(Location.arel_table[:latitude].gteq(@search_perimeter.bottom))
+          .where(Location.arel_table[:latitude].lteq(@search_perimeter.top))
+          .where(Location.arel_table[:longitude].gteq(@search_perimeter.left))
+          .where(Location.arel_table[:longitude].lteq(@search_perimeter.right)) 
+          .find_each do |mj|
+            AppConfig::Scalability::THREAD_POOL.process {
+              MusicJockeySongRequest.create!(music_jockey_id: mj.id, listener_song_request_id: @request.id)
+            }
+          end
+        }
       end
     end
   end

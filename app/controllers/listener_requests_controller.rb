@@ -16,7 +16,7 @@ class ListenerRequestsController < ApplicationController
     @listener=Listener.find_by(email: params[:email])
     @artist=Artist.where(name: params[:artist_name]).first_or_create!
     @song=Song.where(name: params[:song_name], artist_id: @artist.id).first_or_create!
-    @position = Util::Position.new(params[:latitude].to_f,params[:longitude].to_f)
+    @position=Util::Position.new(params[:latitude].to_f, params[:longitude].to_f)
     @search_radius=params[:search_radius]
   end
 end
