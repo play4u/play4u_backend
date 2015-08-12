@@ -29,6 +29,10 @@ class MusicJockeysController < ApplicationController
     .first_or_initialize
   end
   
+  def render_person
+    render json: {music_jockey: @person}
+  end
+  
   def show
     if @person
       render_person
