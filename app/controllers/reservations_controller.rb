@@ -64,7 +64,7 @@ class ReservationsController < ApplicationController
   protected
   def controller_params
     begin
-      @reservation=Reservation.find(params[:id].to_i)
+      @reservation=Reservation.find(params[:id].to_i.abs)
     rescue ActiveRecord::RecordNotFound => e
       @logger.debug e.message + '\n' + e.backtrace.inspect
     end
@@ -73,7 +73,7 @@ class ReservationsController < ApplicationController
     @end_time=end_time_param
     
     @description=params[:description]
-    @place_id=params[:place_id].to_i
+    @place_id=params[:place_id].to_i.abs
     
     begin
       @mj=MusicJockey.find(params[:music_jockey_id].to_i.abs)

@@ -1,8 +1,8 @@
 class ListenerRequestsController < ApplicationController
-  before_action :request_params, only: [:request_song]
+  before_action :request_params
   
   def request_song   
-    Controllers::Proxy::SongRequestProxy
+    ::Proxies::SongRequestProxy
     .new(@listener, @song, @search_radius)
     .request!
     
@@ -13,10 +13,16 @@ class ListenerRequestsController < ApplicationController
   #
   protected
   def request_params
-    @listener=Listener.find_by(email: params[:email])
+    @listener=PersonDetail.find_by(email: params[:email]).person
     @artist=Artist.where(name: params[:artist_name]).first_or_create!
     @song=Song.where(name: params[:song_name], artist_id: @artist.id).first_or_create!
-    @position=Util::Position.new(params[:latitude].to_f, params[:longitude].to_f)
-    @search_radius=params[:search_radius]
+    @position=Util::Position.new(params[:latitude].to_f.abs, params[:longitude].to_f.abs)
+    @search_radius=params[:search_radius].to_i.abs
+    
+    location=Location.new
+    location.longitude=@position.longitude
+    location.latitude=@position.latitude
+    @listener.location=location
+    @listener.save!
   end
 end
