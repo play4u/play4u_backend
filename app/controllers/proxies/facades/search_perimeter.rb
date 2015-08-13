@@ -11,11 +11,15 @@ module Proxies
         @search_radius=search_radius
       end
       
-      def to_json
-        {left: left, right: right, top: top, bottom: bottom}.to_json
+      def to_h
+        {left: left, right: right, top: top, bottom: bottom}
       end
       
-      def to_str
+      def to_json
+        to_h.to_json
+      end
+      
+      def to_s
         to_json
       end
       

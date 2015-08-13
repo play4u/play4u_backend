@@ -30,9 +30,12 @@ module Proxies
       @request.longitude=@listener.location.longitude
       @request.latitude=@listener.location.latitude
       @request.save!
-      @logger.info('Created request: '+@request.to_json)
+      @logger.info('Created listener song request: '+@request.to_json)
       
       AppConfig::Scalability::THREAD_POOL.process{
+        @logger.info "Find music jockeys for listener song request #{@request.id}"
+        @logger.info "Search perimeter for request #{@request.id}: #{@search_perimeter}. Epicenter: #{@listener.location}"
+        
         MusicJockey
         .joins(:location)
         .where(Location.arel_table[:latitude].gteq(@search_perimeter.bottom))
@@ -40,8 +43,15 @@ module Proxies
         .where(Location.arel_table[:longitude].gteq(@search_perimeter.left))
         .where(Location.arel_table[:longitude].lteq(@search_perimeter.right)) 
         .find_each do |mj|
+          @logger.info "Found music jockey(#{mj.id}) within search perimeter with radius #{@search_radius}"
+          
           AppConfig::Scalability::THREAD_POOL.process {
-            MusicJockeySongRequest.create!(music_jockey_id: mj.id, listener_song_request_id: @request.id)
+            @logger.info "Assign listener song request #{@request.id} to music jockey(#{mj.id})..."
+            mj_song_request=MusicJockeySongRequest.create!(music_jockey_id: mj.id, 
+            listener_song_request_id: @request.id)
+            
+            @logger.info "Assigned listener song request #{@request.id} to music jockey(#{mj.id}). "+
+            "Music jockey song request: #{mj_song_request}"
           }
         end
       }

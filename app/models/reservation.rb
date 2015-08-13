@@ -4,8 +4,12 @@ class Reservation < ActiveRecord::Base
   belongs_to :music_jockey
   belongs_to :song
   
+  def to_h
+    as_json
+  end
+  
   def to_json
-    {listener: listener, music_jockey: music_jockey, artist:song.artist, song: song}.to_json
+    as_json.merge({listener: listener, music_jockey: music_jockey, artist:song.artist, song: song}).to_json
   end
   
   def to_s
